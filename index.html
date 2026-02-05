@@ -24,6 +24,9 @@
 
 <div id="qrcode"></div>
 
+<br>
+<button onclick="gerarPDF()">Baixar PDF</button>
+
 <script>
 
 const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbxvfYp8lAAdF1bERhUjNP2DBkhscAhOOEgI5pFd36Jw6qzXG0v6NLSUxdXAWKZIZzjP/exec";
@@ -39,6 +42,35 @@ function gerar(){
     horas: document.getElementById("horas").value,
     data: document.getElementById("data").value
   };
+
+function gerarPDF(){
+
+  const { jsPDF } = window.jspdf;
+
+  const nome = document.getElementById("nome").value;
+  const curso = document.getElementById("curso").value;
+  const horas = document.getElementById("horas").value;
+  const data = document.getElementById("data").value;
+
+  const pdf = new jsPDF("landscape", "mm", "a4");
+
+  pdf.setFontSize(22);
+  pdf.text("CERTIFICADO", 148, 40, {align:"center"});
+
+  pdf.setFontSize(14);
+  pdf.text("Certificamos que", 148, 70, {align:"center"});
+  pdf.text(nome, 148, 85, {align:"center"});
+  pdf.text("concluiu o curso " + curso, 148, 100, {align:"center"});
+  pdf.text("Carga horária: " + horas + " horas", 148, 115, {align:"center"});
+  pdf.text("Data: " + data, 148, 130, {align:"center"});
+
+  const qrCanvas = document.querySelector("#qrcode canvas");
+  const qrImage = qrCanvas.toDataURL("image/png");
+
+  pdf.addImage(qrImage, "PNG", 240, 150, 40, 40);
+
+  pdf.save("certificado.pdf");
+}
 
   // envia para planilha
   fetch(URL_SCRIPT,{
@@ -58,6 +90,7 @@ function gerar(){
 
 </script>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
 </body>
 </html>
-
