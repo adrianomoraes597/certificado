@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Validar Certificado</title>
+</head>
+
+<body>
+
+<h2 id="resultado">Validando...</h2>
+
+<script>
+
+const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbxvfYp8lAAdF1bERhUjNP2DBkhscAhOOEgI5pFd36Jw6qzXG0v6NLSUxdXAWKZIZzjP/exec";
+
+const params = new URLSearchParams(window.location.search);
+const id = params.get("id");
+
+fetch(URL_SCRIPT + "?id=" + id)
+.then(res => res.json())
+.then(dados => {
+
+  if(dados.valido){
+    document.getElementById("resultado").innerHTML =
+      "✅ Certificado válido<br><br>" +
+      "Aluno: " + dados.nome + "<br>" +
+      "Curso: " + dados.curso + "<br>" +
+      "Horas: " + dados.horas;
+  } else {
+    document.getElementById("resultado").innerHTML =
+      "❌ Certificado não encontrado";
+  }
+
+});
+
+</script>
+
+</body>
+</html>
