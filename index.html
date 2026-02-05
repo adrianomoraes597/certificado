@@ -43,6 +43,22 @@ function gerar(){
     data: document.getElementById("data").value
   };
 
+  // envia para planilha
+  fetch(URL_SCRIPT,{
+    method:"POST",
+    body: JSON.stringify(dados)
+  });
+
+  // cria QR Code
+  document.getElementById("qrcode").innerHTML = "";
+
+  new QRCode(document.getElementById("qrcode"), {
+    text: "https://certificado-v435.onrender.com/validar.html?id=" + id,
+    width: 120,
+    height: 120
+  });
+}
+
 function gerarPDF(){
 
   const { jsPDF } = window.jspdf;
@@ -70,22 +86,6 @@ function gerarPDF(){
   pdf.addImage(qrImage, "PNG", 240, 150, 40, 40);
 
   pdf.save("certificado.pdf");
-}
-
-  // envia para planilha
-  fetch(URL_SCRIPT,{
-    method:"POST",
-    body: JSON.stringify(dados)
-  });
-
-  // cria QR Code
-  document.getElementById("qrcode").innerHTML = "";
-
-  new QRCode(document.getElementById("qrcode"), {
-    text: "https://certificado-v435.onrender.com/validar.html?id=" + id,
-    width: 120,
-    height: 120
-  });
 }
 
 </script>
